@@ -1,0 +1,6 @@
+__pycache__/
+*.db
+.git/
+sonarqube/
+zap/
+*.log

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForensicMeta - Análisis de Metadatos Forenses</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Fondo animado de matriz -->
+    <canvas id="matrix-bg"></canvas>
+    
+    <!-- Página de Login -->
+    <div id="login-page" class="page active">
+        <div class="login-container">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-close"></span>
+                        <span class="btn-minimize"></span>
+                        <span class="btn-maximize"></span>
+                    </div>
+                    <div class="terminal-title">root@forensicmeta:~#</div>
+                </div>
+                
+                <div class="terminal-body">
+                    <div class="ascii-art">
+    ███████╗ ██████╗ ██████╗ ███████╗███╗   ██╗███████╗██╗ ██████╗
+    ██╔════╝██╔═══██╗██╔══██╗██╔════╝████╗  ██║██╔════╝██║██╔════╝
+    █████╗  ██║   ██║██████╔╝█████╗  ██╔██╗ ██║███████╗██║██║     
+    ██╔══╝  ██║   ██║██╔══██╗██╔══╝  ██║╚██╗██║╚════██║██║██║     
+    ██║     ╚██████╔╝██║  ██║███████╗██║ ╚████║███████║██║╚██████╗
+    ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝ ╚═════╝
+                    ███╗   ███╗███████╗████████╗ █████╗ 
+                    ████╗ ████║██╔════╝╚══██╔══╝██╔══██╗
+                    ██╔████╔██║█████╗     ██║   ███████║
+                    ██║╚██╔╝██║██╔══╝     ██║   ██╔══██║
+                    ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║
+                    ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝
+                    </div>
+                    
+                    <div class="login-form-container">
+                        <div class="system-info">
+                            <span class="blinking-cursor">█</span> Sistema de Análisis Forense v1.0.0
+                        </div>
+                        <div class="system-info">
+                            <span class="blinking-cursor">█</span> Inicializando módulos de seguridad...
+                        </div>
+                        <div class="system-info">
+                            <span class="blinking-cursor">█</span> Autenticación requerida
+                        </div>
+                        
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label for="username">
+                                    <span class="prompt">root@forensicmeta</span>
+                                    <span class="separator">:~$</span> username
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username" 
+                                    required 
+                                    autocomplete="username"
+                                    placeholder="Ingrese su usuario"
+                                    class="terminal-input"
+                                >
+                                <span class="validation-msg" id="username-validation"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">
+                                    <span class="prompt">root@forensicmeta</span>
+                                    <span class="separator">:~$</span> password
+                                </label>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    required 
+                                    autocomplete="current-password"
+                                    placeholder="Ingrese su contraseña"
+                                    class="terminal-input"
+                                >
+                                <span class="validation-msg" id="password-validation"></span>
+                            </div>
+                            
+                            <div class="button-group">
+                                <button type="submit" class="btn-primary" id="login-btn">
+                                    <span class="btn-text">INICIAR SESIÓN</span>
+                                    <span class="btn-loading" style="display: none;">
+                                        <span class="spinner"></span> Autenticando...
+                                    </span>
+                                </button>
+                                <button type="button" class="btn-secondary" id="show-register-btn">
+                                    REGISTRARSE
+                                </button>
+                            </div>
+                            
+                            <div id="login-error" class="error-message" style="display: none;"></div>
+                        </form>
+                        
+                        <div class="login-footer">
+                            <div class="access-info">
+                                <span class="status-indicator"></span>
+                                <span>Conexión segura establecida</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Página de Registro -->
+    <div id="register-page" class="page">
+        <div class="login-container">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-close"></span>
+                        <span class="btn-minimize"></span>
+                        <span class="btn-maximize"></span>
+                    </div>
+                    <div class="terminal-title">root@forensicmeta:~# register</div>
+                </div>
+                
+                <div class="terminal-body">
+                    <div class="register-header">
+                        <h2>CREAR NUEVA CUENTA</h2>
+                        <p>Registro de nuevo analista forense</p>
+                    </div>
+                    
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="reg-username">Usuario</label>
+                            <input 
+                                type="text" 
+                                id="reg-username" 
+                                name="username" 
+                                required 
+                                minlength="3"
+                                placeholder="Nombre de usuario"
+                                class="terminal-input"
+                            >
+                            <span class="validation-msg" id="reg-username-validation"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-email">Email</label>
+                            <input 
+                                type="email" 
+                                id="reg-email" 
+                                name="email" 
+                                required 
+                                placeholder="correo@ejemplo.com"
+                                class="terminal-input"
+                            >
+                            <span class="validation-msg" id="reg-email-validation"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-fullname">Nombre Completo</label>
+                            <input 
+                                type="text" 
+                                id="reg-fullname" 
+                                name="full_name" 
+                                required 
+                                placeholder="Juan Pérez"
+                                class="terminal-input"
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-password">Contraseña</label>
+                            <input 
+                                type="password" 
+                                id="reg-password" 
+                                name="password" 
+                                required 
+                                minlength="6"
+                                placeholder="Mínimo 6 caracteres"
+                                class="terminal-input"
+                            >
+                            <span class="validation-msg" id="reg-password-validation"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-password-confirm">Confirmar Contraseña</label>
+                            <input 
+                                type="password" 
+                                id="reg-password-confirm" 
+                                required 
+                                minlength="6"
+                                placeholder="Repita su contraseña"
+                                class="terminal-input"
+                            >
+                            <span class="validation-msg" id="reg-password-confirm-validation"></span>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button type="submit" class="btn-primary" id="register-btn">
+                                <span class="btn-text">CREAR CUENTA</span>
+                                <span class="btn-loading" style="display: none;">
+                                    <span class="spinner"></span> Creando cuenta...
+                                </span>
+                            </button>
+                            <button type="button" class="btn-secondary" id="back-to-login-btn">
+                                VOLVER AL LOGIN
+                            </button>
+                        </div>
+                        
+                        <div id="register-error" class="error-message" style="display: none;"></div>
+                        <div id="register-success" class="success-message" style="display: none;"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dashboard Principal -->
+    <div id="dashboard-page" class="page">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="brand-icon">⚡</span>
+                <span class="brand-text">FORENSIC<span class="highlight">META</span></span>
+            </div>
+            
+            <div class="nav-user">
+                <span class="user-info">
+                    <span class="user-role" id="user-role">ANALYST</span>
+                    <span class="user-name" id="user-name">Usuario</span>
+                </span>
+                <button class="btn-logout" id="logout-btn">
+                    <span>SALIR</span>
+                    <span class="logout-icon">→</span>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Contenido del Dashboard -->
+        <div class="dashboard-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📁</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Archivos Analizados</div>
+                        <div class="stat-value" id="total-files">0</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🔍</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Metadatos Extraídos</div>
+                        <div class="stat-value" id="total-metadata">0</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Análisis Hoy</div>
+                        <div class="stat-value" id="today-analysis">0</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zona de Carga de Archivos -->
+            <div class="upload-section">
+                <h2 class="section-title">
+                    <span class="title-icon">↑</span>
+                    ANÁLISIS DE METADATOS
+                </h2>
+                
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon">📤</div>
+                    <h3>Arrastre un archivo aquí</h3>
+                    <p>o haga clic para seleccionar</p>
+                    <p class="upload-hint">Formatos: JPG, PNG, PDF, DOCX, XLSX, MP4, MP3</p>
+                    <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.gif,.pdf,.docx,.xlsx,.mp4,.avi,.mp3" hidden>
+                </div>
+                
+                <div id="upload-progress" class="upload-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">Analizando archivo...</div>
+                </div>
+            </div>
+            
+            <!-- Resultados del Análisis -->
+            <div id="results-section" class="results-section" style="display: none;">
+                <h2 class="section-title">
+                    <span class="title-icon">📊</span>
+                    RESULTADOS DEL ANÁLISIS
+                </h2>
+                
+                <div class="file-info-card">
+                    <div class="info-row">
+                        <span class="info-label">Archivo:</span>
+                        <span class="info-value" id="result-filename"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Hash SHA-256:</span>
+                        <span class="info-value hash-value" id="result-hash"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tamaño:</span>
+                        <span class="info-value" id="result-size"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tipo MIME:</span>
+                        <span class="info-value" id="result-type"></span>
+                    </div>
+                </div>
+                
+                <div id="metadata-container" class="metadata-container"></div>
+            </div>
+            
+            <!-- Historial de Análisis -->
+            <div class="history-section">
+                <h2 class="section-title">
+                    <span class="title-icon">📜</span>
+                    HISTORIAL DE ANÁLISIS
+                </h2>
+                
+                <div id="history-table" class="history-table"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
